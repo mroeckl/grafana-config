@@ -1,0 +1,135 @@
+{
+  "id": 85,
+  "gridPos": {
+    "h": 6,
+    "w": 12,
+    "x": 12,
+    "y": 22
+  },
+  "type": "barchart",
+  "title": "Energy Traffic Light",
+  "datasource": {
+    "type": "yesoreyeram-infinity-datasource",
+    "uid": "PkvY0Xigz"
+  },
+  "pluginVersion": "9.2.4",
+  "description": "",
+  "fieldConfig": {
+    "defaults": {
+      "custom": {
+        "lineWidth": 1,
+        "fillOpacity": 75,
+        "gradientMode": "none",
+        "axisPlacement": "auto",
+        "axisLabel": "Renewable Share",
+        "axisColorMode": "text",
+        "scaleDistribution": {
+          "type": "linear"
+        },
+        "axisCenteredZero": false,
+        "hideFrom": {
+          "tooltip": false,
+          "viz": false,
+          "legend": false
+        }
+      },
+      "color": {
+        "mode": "thresholds"
+      },
+      "mappings": [
+        {
+          "options": {
+            "0": {
+              "color": "red",
+              "index": 2
+            },
+            "1": {
+              "color": "orange",
+              "index": 1
+            },
+            "2": {
+              "color": "green",
+              "index": 0
+            }
+          },
+          "type": "value"
+        }
+      ],
+      "thresholds": {
+        "mode": "absolute",
+        "steps": [
+          {
+            "color": "green",
+            "value": null
+          }
+        ]
+      },
+      "unit": "none"
+    },
+    "overrides": [
+      {
+        "matcher": {
+          "id": "byName",
+          "options": "Renewable Share"
+        },
+        "properties": [
+          {
+            "id": "unit",
+            "value": "percent"
+          }
+        ]
+      }
+    ]
+  },
+  "options": {
+    "orientation": "auto",
+    "xTickLabelRotation": 0,
+    "xTickLabelSpacing": 100,
+    "showValue": "auto",
+    "stacking": "none",
+    "groupWidth": 0.7,
+    "barWidth": 0.85,
+    "barRadius": 0.3,
+    "tooltip": {
+      "mode": "multi",
+      "sort": "desc"
+    },
+    "legend": {
+      "showLegend": false,
+      "displayMode": "list",
+      "placement": "bottom",
+      "calcs": []
+    },
+    "colorByField": "Color",
+    "xField": "Timestamp"
+  },
+  "targets": [
+    {
+      "columns": [
+        {
+          "selector": "",
+          "text": "timestamp",
+          "type": "string"
+        }
+      ],
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "PkvY0Xigz"
+      },
+      "filters": [],
+      "format": "table",
+      "global_query_id": "",
+      "hide": false,
+      "refId": "EnergyTrafficLight",
+      "root_selector": "$[0].xAxisValues",
+      "source": "url",
+      "type": "uql",
+      "uql": "parse-json\n| jsonata \"$zip($[0].xAxisValues,$[0].data,$[1].data)\"\n| project \"Timestamp\"=unixtime_milliseconds_todatetime(\"0\"), \"Renewable Share\"=\"1\", \"Color\"=\"2\"",
+      "url": "https://api.energy-charts.info/traffic_signal?country=de",
+      "url_options": {
+        "data": "",
+        "method": "GET"
+      }
+    }
+  ]
+}
